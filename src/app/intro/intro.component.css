@@ -1,0 +1,8 @@
+.drag-drop-area {
+    min-height: 200px;
+    border: 2px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+}
