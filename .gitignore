@@ -1,6 +1,6 @@
 .DS_STORE
 
-/.angular/*
+.angular/*
 /dist/
 /bazel-out
 /integration/bazel/bazel-*
