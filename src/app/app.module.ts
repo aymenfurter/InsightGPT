@@ -11,6 +11,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowseComponent } from './browse/browse.component';
 import { OpenaiService } from './openai.service';
+import { NgxWebstorageModule } from 'ngx-webstorage';
+
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { OpenaiService } from './openai.service';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    NgxWebstorageModule.forRoot(),
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,

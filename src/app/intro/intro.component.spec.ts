@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { IntroComponent } from './intro.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 
 describe('IntroComponent', () => {
   let component: IntroComponent;
@@ -8,7 +11,12 @@ describe('IntroComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ IntroComponent ]
+      declarations: [ IntroComponent ],
+      imports: [
+        MatToolbarModule,
+        MatCardModule
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 
@@ -18,6 +26,6 @@ describe('IntroComponent', () => {
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(component).toBeInstanceOf(IntroComponent);
   });
 });
