@@ -12,7 +12,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { BrowseComponent } from './browse/browse.component';
 import { OpenaiService } from './openai.service';
 import { NgxWebstorageModule } from 'ngx-webstorage';
-
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @NgModule({
   declarations: [
@@ -25,6 +28,10 @@ import { NgxWebstorageModule } from 'ngx-webstorage';
     AppRoutingModule,
     NgxWebstorageModule.forRoot(),
     BrowserAnimationsModule,
+    MatIconModule,
+    MatBadgeModule,
+    MatProgressBarModule,
+    MatSnackBarModule,
     MatToolbarModule,
     MatButtonModule,
     MatCardModule

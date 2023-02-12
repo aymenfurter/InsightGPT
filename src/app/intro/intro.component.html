@@ -1,21 +1,49 @@
 <div class="intro-section">
   <mat-card>
     <mat-card-content>
-      <h1>Whitlock</h1>
-      <p>This is an app that allows you to upload documents and explore their content.</p>
+      <p>This open source project uses Azure OpenAI Service (GPT-3) to analyze and understand document content, delivering powerful insights and discover hidden value.</p>
     </mat-card-content>
   </mat-card>
-  <mat-card class="drag-drop-area" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+  <mat-card class="pdf-info-card">
     <mat-card-content>
-         <p>Drag and drop files here</p>
-         <p>or</p>
-         <mat-button>
-         <input mat-button mat-mini-fab color="primary" class="upload-btn" type="file" (change)="onFileSelected($event)" multiple>
-         </mat-button>
-     </mat-card-content>
-        <mat-card-content>
-         <button mat-button color="primary">Analyze files</button>
-         <button mat-button color="warn">Reset</button>
-     </mat-card-content>
+      <div class="badges-container">
+        <div class="badge-item">
+          <mat-icon matBadge="{{ pdfPageService.getPages().length }}" matBadgeColor="primary">pageview</mat-icon>
+          <p>Pages</p>
+        </div>
+        <div class="badge-item">
+          <mat-icon matBadge="{{ pdfPageService.getFiles().length }}" matBadgeColor="accent">description</mat-icon>
+          <p>Files</p>
+        </div>
+        <div class="badge-item">
+          <mat-icon matBadge="{{ pdfPageService.getAnalyzedPages().length }}" matBadgeColor="accent">assessment</mat-icon>
+          <p>Analyzed</p>
+        </div>
+      </div>
+    </mat-card-content>
   </mat-card>
+  <mat-card >
+    <mat-card-content>
+      <mat-progress-bar mode="determinate" [value]="pdfPageService.progress"></mat-progress-bar>
+    </mat-card-content>
+  </mat-card>
+  <div class="drag-drop-area-container">
+    <mat-card class="drag-drop-area" (drop)="onDrop($event)" (dragover)="onDragOver($event)">
+      <mat-card-content>
+        <p>Drag and drop files here</p>
+        <p>or</p>
+        <mat-button>
+          <input mat-button mat-mini-fab color="primary" class="upload-btn" type="file" (change)="onFileSelected($event)" multiple>
+        </mat-button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div class="buttons-container">
+    <mat-card-content>
+      <button mat-button color="primary" (click)="onAnalyzeFiles()">Analyze files</button>
+      <button mat-button color="warn" (click)="onReset()">Reset</button>
+    </mat-card-content>
+  </div>
 </div>
+
+

@@ -1,5 +1,6 @@
 export class PDFPage {
   file: File;
+  isAnalyzed: boolean;
   text: string;
   pageNumber: number;
   entityCategories: string[] = [];
@@ -11,5 +12,6 @@ export class PDFPage {
     this.file = file;
     this.text = text;
     this.pageNumber = pageNumber;
+    this.isAnalyzed = false;
   }
 }

@@ -6,3 +6,31 @@
     justify-content: center;
     margin: 20px;
 }
+
+.badges-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.badge-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 2rem;
+}
+
+.badge-icon {
+  font-size: 3rem;
+}
+
+.badge-item {
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.badge-label {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  text-transform: uppercase;
+}

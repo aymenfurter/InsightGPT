@@ -3,23 +3,29 @@ import { Router } from '@angular/router';
 import { OpenaiService } from '../openai.service';
 import * as pdfjs from 'pdfjs-dist';
 import { TextItem } from 'pdfjs-dist/types/src/display/api';
-
+import { PDFPage } from './../models/pdf-page';
+import { PDFPageService } from './../services/pdf-page.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 @Component({
   selector: 'app-intro',
   templateUrl: './intro.component.html',
-  styleUrls: ['./intro.component.css'],
+  styleUrls: ['./intro.component.css'], 
 })
 export class IntroComponent {
-  constructor(private router: Router, private openAi: OpenaiService) { }
+  constructor(private matProgress: MatProgressBarModule, private matBadge: MatBadgeModule, private matIcon: MatIconModule, private snackBar: MatSnackBar, private router: Router, private openAi: OpenaiService, public pdfPageService: PDFPageService) { }
+  numPages: number = 0;
 
   ngOnInit(): void {
     pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.3.122/pdf.worker.min.js';
+    this.numPages = this.pdfPageService.getPages().length;
   }
   onDrop(event: Event) {
     event.preventDefault();
     const files = (event.target as HTMLInputElement).files;
-    console.log(files);
     // process the files here
   }
 
@@ -29,7 +35,6 @@ export class IntroComponent {
 
   onFileSelected(event: Event) {
     const files = (event.target as HTMLInputElement).files;
-    console.log(files);
 
     if (files == null) {
       return;
@@ -38,39 +43,53 @@ export class IntroComponent {
     // loop through files
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      console.log(file);
-      if (file.type === 'application/pdf') {
-        const reader = new FileReader();
-        reader.onload = async () => {
-          const typedArray = new Uint8Array(reader.result as ArrayBuffer);
-          const pdf = await pdfjs.getDocument({ data: typedArray }).promise;
-          const numPages = pdf.numPages;
-          let text = '';
-
-          for (let i = 1; i <= numPages; i++) {
-            const page = await pdf.getPage(i);
-            const content = await page.getTextContent();
-            text += content.items
-            .filter(item => item.hasOwnProperty('str'))
-            .map(item => (item as TextItem).str)
-            .join('');
-          }
-
-          console.log(text);
-        };
-        reader.readAsArrayBuffer(file);
+      if (file.type !== 'application/pdf') {
+        this.snackBar.open('Error: Only PDF files are allowed', '', {
+          duration: 3000,
+        });
+        return;
       }
+
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const typedArray = new Uint8Array(reader.result as ArrayBuffer);
+        const pdf = await pdfjs.getDocument({ data: typedArray }).promise;
+        const numPages = pdf.numPages;
+
+        for (let i = 1; i <= numPages; i++) {
+          let text = '';
+          const page = await pdf.getPage(i);
+          const content = await page.getTextContent();
+          text += content.items
+          .filter(item => item.hasOwnProperty('str'))
+          .map(item => (item as TextItem).str)
+          .join('');
+
+          const pdfPage = new PDFPage(file, text, i);
+          this.pdfPageService.addPage(pdfPage); // Add the generated page to the service
+        }
+        this.snackBar.open(`${numPages} pages added from ${file.name}.`, 'Close');
+        this.numPages = this.pdfPageService.getPages().length;
+  
+      };
+      reader.readAsArrayBuffer(file);
     }
+    
 
-
-
-
-
-    this.router.navigate(['/browse']);
+    /*
     var response = this.openAi.getDataFromOpenAI("Hi? Anyone listening?");
     
     console.log(response);
-
-    // process the files here
+    */
   }
+  onAnalyzeFiles() {
+    this.router.navigate(['/browse']);
+  }
+
+  onReset() {
+    this.pdfPageService.deleteAllData();
+    this.snackBar.open('All data deleted.', 'Close');
+    this.numPages = 0;
+  }
+
 }

@@ -2,10 +2,13 @@
 <header>
 <mat-toolbar color="primary">
   <mat-toolbar-row>
-    <a mat-button routerLink="/intro">Intro</a>
-    <a mat-button routerLink="/explore">Explore</a>
+    <a routerLink="/intro"><img src="assets/logo.png" class="logo" alt="Logo">
+    </a>
+    &nbsp;&nbsp;Whitlock
     <span class="spacer"></span>
-    <a mat-button>About</a>
+    <a mat-button routerLink="/about"><mat-icon>info</mat-icon></a>
+    <a mat-button routerLink="/settings"><mat-icon>settings</mat-icon></a>
+    <a mat-button routerLink="/intro"><mat-icon>upload</mat-icon></a>
   </mat-toolbar-row>
 </mat-toolbar>
 </header>
