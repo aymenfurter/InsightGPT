@@ -6,92 +6,95 @@ import { OpenaiService } from '../openai.service';
 @Injectable({
 providedIn: 'root'
 })
+
 export class PDFPageService {
-    private pagesKey = 'pdf_pages';
-    public progress = 0;
+  private pages: PDFPage[] = [];
+  private pagesKey = 'pdf_pages';
+  public progress = 0;
 
-    constructor(private localStorage: LocalStorageService, private openaiService: OpenaiService) { }
+  constructor(
+    private localStorage: LocalStorageService,
+    private openaiService: OpenaiService
+  ) {}
 
 
+  getPages(): PDFPage[] {
+    return this.pages;
+  }
 
-    getPages(): PDFPage[] {
-        return this.localStorage.retrieve(this.pagesKey) || [];
+  addPage(page: PDFPage): void {
+    this.pages.push(page);
+  }
+
+  updatePage(page: PDFPage): void {
+    const index = this.pages.findIndex((p) => p.pageNumber === page.pageNumber);
+    if (index !== -1) {
+      this.pages[index] = page;
+    }
+  }
+
+  deletePage(pageNumber: number): void {
+    this.pages = this.pages.filter((p) => p.pageNumber !== pageNumber);
+  }
+
+  deleteAllData(): void {
+    this.pages = [];
+  }
+
+  getNumberOfPages(): number {
+    return this.pages.length;
+  }
+
+  getFiles(): File[] {
+    const files: File[] = [];
+    for (const page of this.pages) {
+      if (!files.includes(page.file)) {
+        files.push(page.file);
+      }
+    }
+    return files;
+  }
+
+  getAnalyzedPages(): PDFPage[] {
+    return this.pages.filter((page) => page.isAnalyzed);
+  }
+
+  async analyzePages() {
+    const pages = this.pages;
+    let currentPageIndex = 0;
+    const totalPages = pages.length;
+
+    const updateProgress = () => {
+      this.progress = (currentPageIndex / totalPages) * 100;
+    };
+
+    for (const page of pages) {
+      if (!page.isAnalyzed) {
+        const openaiResult = await this.openaiService.getDataFromOpenAI(page.text);
+        page.date = openaiResult.date;
+        page.evaluations = openaiResult.evaluations;
+        page.standardCategories = openaiResult.standardCategories;
+        page.extendedCategories = openaiResult.extendedCategories;
+        page.isAnalyzed = true;
+        this.updatePage(page);
+        console.log(openaiResult);
+        setTimeout(() => {}, 500);
+        currentPageIndex++;
+        updateProgress();
+      }
     }
 
-    addPage(page: PDFPage): void {
-        const pages = this.getPages();
-        pages.push(page);
-        this.localStorage.store(this.pagesKey, pages);
-    }
+    this.progress = 100;
+  }
 
-    updatePage(page: PDFPage): void {
-        const pages = this.getPages();
-        const index = pages.findIndex(p => p.pageNumber === page.pageNumber);
-        if (index !== -1) {
-            pages[index] = page;
-            this.localStorage.store(this.pagesKey, pages);
-        }
-    }
+  saveToLocalStorage() {
+    this.pagesKey = 'pdf_pages';
+    this.localStorage.store(this.pagesKey, this.pages);
+  }
 
-    deletePage(pageNumber: number): void {
-        const pages = this.getPages().filter(p => p.pageNumber !== pageNumber);
-        this.localStorage.store(this.pagesKey, pages);
-    }
-    
-    deleteAllData(): void {
-        this.localStorage.clear(this.pagesKey);
-    }
-
-    getNumberOfPages(): number {
-        const pages = this.getPages();
-        return pages.length;
-    }
-
-    getFiles(): File[] {
-        const pages = this.getPages();
-        const files: File[] = [];
-        for (const page of pages) {
-            if (!files.includes(page.file)) {
-            files.push(page.file);
-            }
-        }
-        return files;
-    }
-
-    getAnalyzedPages(): PDFPage[] {
-        return this.getPages().filter(page => page.isAnalyzed);
-    }
-
-    async analyzePages() {
-        const pages = this.getPages();
-        let currentPageIndex = 0;
-        const totalPages = pages.length;
-
-        const updateProgress = () => {
-            this.progress = (currentPageIndex / totalPages) * 100;
-        };
-
-        for (const page of pages) {
-            if (!page.isAnalyzed) {
-                var openaiResult = this.openaiService.getDataFromOpenAI(page.text);
-                await this.openaiService.getDataFromOpenAI(page.text).then((result) => {
-                    openaiResult = result
-                    page.date = result.date;
-                    page.evaluations = result.evaluations;
-                    page.standardCategories = result.standardCategories;
-                    page.extendedCategories = result.extendedCategories;
-                    page.isAnalyzed = true;
-                    this.updatePage(page);
-                });
-                console.log(openaiResult);
-                setTimeout(() => {}, 500);
-                currentPageIndex++;
-                updateProgress();
-            }
-        }
-
-        this.progress = 100;
-    }
-
-
+  loadFromLocalStorage() {
+    this.pagesKey = 'pdf_pages';
+    const pages = this.localStorage.retrieve(this.pagesKey) || [];
+    this.pages = pages;
+  }
 }

@@ -1,1 +1,15 @@
-<p>welcome to browse works!</p>
+<div class="layout">
+  <div class="network-panel">
+    <div id="network-container"></div>
+  </div>
+  <div class="document-panel">
+    <pdf-viewer [src]="pdfUrl"></pdf-viewer>
+  </div>
+  <mat-toolbar>
+    <div class="toolbar-content">
+        
+      <p>Selected Document: {{selectedDocumentName}}</p>
+      <p>Contextual Information: {{contextualInfo}}</p>
+    </div>
+  </mat-toolbar>
+</div>

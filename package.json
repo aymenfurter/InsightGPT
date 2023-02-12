@@ -20,12 +20,12 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
-    "ngx-vis": "^3.1.2",
     "ngx-webstorage": "^11.1.1",
     "openai": "^3.1.0",
     "pdfjs-dist": "^3.3.122",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
+    "vis-network": "^9.1.2",
     "zone.js": "~0.12.0"
   },
   "devDependencies": {

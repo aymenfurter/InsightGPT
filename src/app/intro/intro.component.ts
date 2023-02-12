@@ -43,6 +43,7 @@ export class IntroComponent {
     // loop through files
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
+      console.log(file);
       if (file.type !== 'application/pdf') {
         this.snackBar.open('Error: Only PDF files are allowed', '', {
           duration: 3000,
@@ -65,6 +66,7 @@ export class IntroComponent {
           .map(item => (item as TextItem).str)
           .join('');
 
+          console.log("this", file);
           const pdfPage = new PDFPage(file, text, i);
           this.pdfPageService.addPage(pdfPage); // Add the generated page to the service
         }
@@ -74,13 +76,6 @@ export class IntroComponent {
       };
       reader.readAsArrayBuffer(file);
     }
-    
-
-    /*
-    var response = this.openAi.getDataFromOpenAI("Hi? Anyone listening?");
-    
-    console.log(response);
-    */
   }
   onAnalyzeFiles() {
     //this.router.navigate(['/browse']);
