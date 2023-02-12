@@ -6,6 +6,7 @@ export class PDFPage {
   entityCategories: string[] = [];
   date: string = '';
   standardCategories: {[category: string]: string[]} = {};
+  extendedCategories: {[category: string]: string[]} = {};
   evaluations: {question: string, answer: string}[] = [];
 
   constructor(file: File, text: string, pageNumber: number) {

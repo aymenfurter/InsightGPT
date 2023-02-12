@@ -83,7 +83,8 @@ export class IntroComponent {
     */
   }
   onAnalyzeFiles() {
-    this.router.navigate(['/browse']);
+    //this.router.navigate(['/browse']);
+    this.pdfPageService.analyzePages();
   }
 
   onReset() {

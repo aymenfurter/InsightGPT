@@ -62,7 +62,7 @@ export class PDFPageService {
         return this.getPages().filter(page => page.isAnalyzed);
     }
 
-    analyzePages() {
+    async analyzePages() {
         const pages = this.getPages();
         let currentPageIndex = 0;
         const totalPages = pages.length;
@@ -74,17 +74,16 @@ export class PDFPageService {
         for (const page of pages) {
             if (!page.isAnalyzed) {
                 var openaiResult = this.openaiService.getDataFromOpenAI(page.text);
-
+                await this.openaiService.getDataFromOpenAI(page.text).then((result) => {
+                    openaiResult = result
+                    page.date = result.date;
+                    page.evaluations = result.evaluations;
+                    page.standardCategories = result.standardCategories;
+                    page.extendedCategories = result.extendedCategories;
+                    page.isAnalyzed = true;
+                    this.updatePage(page);
+                });
                 console.log(openaiResult);
-                /*
-                page.entityCategories = openaiResult.extendedCategories;
-                page.date = openaiResult.date;
-                page.standardCategories = openaiResult.standardCategories;
-                page.evaluations = openaiResult.evaluations;
-                page.isAnalyzed = true;
-                this.updatePage(page);*/
-
-                // wait for 500ms before analyzing the next page
                 setTimeout(() => {}, 500);
                 currentPageIndex++;
                 updateProgress();

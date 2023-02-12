@@ -37,25 +37,36 @@ export class OpenaiService {
   3. standardCategories: Provide a list of standard NERs (Exclusively consisting of DateTime, IP, URL, Email, PhoneNumber, Address, Skill, Product, Event, Organization, Location, PersonType, Person)
   4. evaluations: Evaluate the following questions (yes/no) ("Was this a positive user expierence?", "Did this help to solve the problem?")
 
-  The format should be the following: { "date": "YYYY-MM-DD", standardCategories" : ["category1":  ["value1", "value2"], "category2":  ["value1", "value2"], extendedCategories" : ["category1":  ["value1", "value2"], "category2":  ["value1", "value2"]],  "evaluations": [{"question": "Hello?", "answer": "Hi!"}] }
-
+  The format should be the following: {"date": "YYYY-MM-DD", "standardCategories": [{"category1": ["value1", "value2"]}, {"category2": ["value1", "value2"]}], "extendedCategories": [{"category1": ["value1", "value2"]}, {"category2": ["value1", "value2"]}], "evaluations": [{"question": "Hello?", "answer": "Hi!"}]}  
   This is the text:
   */
-    let prompt = "Perform the following activities:\n1. extendedCategories: Provide 10 Entity Recognition (NER) entity categories that would be suitable for named entity recognization performed on this text (Don't include Quantity, DateTime, IP, URL, Email, PhoneNumber, Address, Skill, Product, Event, Organization, Location, PersonType, Person)\n2. date: extract most relevant date and format: YYYY-MM-DD \n3. standardCategories: Provide a list of standard NERs (Exclusively consisting of DateTime, IP, URL, Email, PhoneNumber, Address, Skill, Product, Event, Organization, Location, PersonType, Person)\n4. evaluations: Evaluate the following questions (yes/no) (\"Was this a positive user expierence?\", \"Did this help to solve the problem?\")\n\nThe format should be the following: { \"date\": \"YYYY-MM-DD\", standardCategories\" : [\"category1\":  [\"value1\", \"value2\"], \"category2\":  [\"value1\", \"value2\"], extendedCategories\" : [\"category1\":  [\"value1\", \"value2\"], \"category2\":  [\"value1\", \"value2\"]],  \"evaluations\": [{\"question\": \"Hello?\", \"answer\": \"Hi!\"}] }\n\nThis is the text:\n";
+    let prompt = "Perform the following activities: \n1. extendedCategories: Provide 10 Entity Recognition (NER) entity categories that would be suitable for named entity recognization performed on this text (Don't include Quantity, DateTime, IP, URL, Email, PhoneNumber, Address, Skill, Product, Event, Organization, Location, PersonType, Person) \n2. date: extract most relevant date and format: YYYY-MM-DD \n3. standardCategories: Provide a list of standard NERs (Exclusively consisting of DateTime, IP, URL, Email, PhoneNumber, Address, Skill, Product, Event, Organization, Location, PersonType, Person) \n4. evaluations: Evaluate the following questions (yes/no) (\"Was this a positive user expierence?\", \"Did this help to solve the problem?\") \n\nThe format should be the following: {\"date\": \"YYYY-MM-DD\", \"standardCategories\": [{\"category1\": [\"value1\", \"value2\"]}, {\"category2\": [\"value1\", \"value2\"]}], \"extendedCategories\": [{\"category1\": [\"value1\", \"value2\"]}, {\"category2\": [\"value1\", \"value2\"]}], \"evaluations\": [{\"question\": \"Hello?\", \"answer\": \"Hi!\"}]} \nThis is the text: \n"; 
     prompt += text;
 
-
-    from(this.openai.createCompletion({
+    return this.openai.createCompletion({
       model: "whitlock",
       prompt: prompt,
       max_tokens: 2048
-    })).pipe(
-      filter(resp => !!resp && !!resp.data),
-      map(resp => resp.data),
-      filter((data: any) => data.choices && data.choices.length > 0 && data.choices[0].text),
-      map(data => data.choices[0].text)
-    ).subscribe(data => {
-        console.log(data);
+    })
+    .then(resp => {
+      if (!resp) {
+        return Promise.reject(new Error('No data received from OpenAI API'));
+      }
+
+      if (!resp.choices || resp.choices.length === 0 || !resp.choices[0].text) {
+        return Promise.reject(new Error('No text received from OpenAI API'));
+      }
+
+      const text = resp.choices[0].text;
+      const startIndex = text.indexOf('{');
+      const endIndex = text.lastIndexOf('}') + 1;
+      if (startIndex === -1 || endIndex === -1 || endIndex <= startIndex) {
+        return Promise.reject(new Error('No JSON object found in the text'));
+      }
+      
+      const jsonObject = JSON.parse(text.substring(startIndex, endIndex));
+
+      return jsonObject;
     });
   }
 }
