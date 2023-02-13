@@ -2,14 +2,19 @@
   <div class="network-panel">
     <div id="network-container"></div>
   </div>
+  <mat-divider></mat-divider>
   <div class="document-panel">
-    <pdf-viewer [src]="pdfUrl"></pdf-viewer>
+    <mat-card class="card" *ngIf="contextualInfo">
+    <mat-card-header>
+      <mat-card-subtitle>Document Viewer</mat-card-subtitle>
+      <mat-card-title>{{ selectedDocumentName }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content id="textView">
+      <p [innerHTML]="contextualInfo"></p>
+      <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-footer>
+    </mat-card-footer>
+  </mat-card>   
   </div>
-  <mat-toolbar>
-    <div class="toolbar-content">
-        
-      <p>Selected Document: {{selectedDocumentName}}</p>
-      <p>Contextual Information: {{contextualInfo}}</p>
-    </div>
-  </mat-toolbar>
 </div>

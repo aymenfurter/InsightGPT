@@ -59,6 +59,7 @@ export class IntroComponent {
 
         for (let i = 1; i <= numPages; i++) {
           let text = '';
+          debugger;
           const page = await pdf.getPage(i);
           const content = await page.getTextContent();
           text += content.items

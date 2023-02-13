@@ -15,7 +15,9 @@ export class PDFPageService {
   constructor(
     private localStorage: LocalStorageService,
     private openaiService: OpenaiService
-  ) {}
+  ) {
+    this.loadFromLocalStorage();
+  }
 
 
   getPages(): PDFPage[] {
@@ -24,6 +26,7 @@ export class PDFPageService {
 
   addPage(page: PDFPage): void {
     this.pages.push(page);
+    this.saveToLocalStorage();
   }
 
   updatePage(page: PDFPage): void {
@@ -31,14 +34,17 @@ export class PDFPageService {
     if (index !== -1) {
       this.pages[index] = page;
     }
+    this.saveToLocalStorage();
   }
 
   deletePage(pageNumber: number): void {
     this.pages = this.pages.filter((p) => p.pageNumber !== pageNumber);
+    this.saveToLocalStorage();
   }
 
   deleteAllData(): void {
     this.pages = [];
+    this.saveToLocalStorage();
   }
 
   getNumberOfPages(): number {
