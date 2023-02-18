@@ -9,7 +9,7 @@ import { IntroComponent } from './intro/intro.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { BrowseComponent } from './browse/browse.component';
+import { BrowseComponent, DialogContentComponent } from './browse/browse.component';
 import { OpenaiService } from './openai.service';
 import { NgxWebstorageModule } from 'ngx-webstorage';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
@@ -34,6 +34,7 @@ import { InfoDialogComponent } from './info-dialog/info-dialog.component';
     IntroComponent,
     ConfigComponent,
     BrowseComponent,
+    DialogContentComponent,
     InfoDialogComponent
   ],
   imports: [

@@ -56,5 +56,5 @@
 #textView {
   font-size: 9pt;
   overflow: scroll;
-  max-height: 500px;
+  max-height: 0px;
 }
