@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>About Whitlock</h2>
+<h2 mat-dialog-title>Welcome to InsightGPT</h2>
 <mat-dialog-content class="mat-typography">
   <h3>Data Stored Locally</h3>
   <ul>
@@ -13,10 +13,13 @@
 
   <p>Contributions and feedback are welcome at our <a href="https://github.com/whitlockio/whitlock" target="_blank">GitHub repository</a>.</p>
 
-  <p>Whitlock is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License, Version 2.0</a>.</p>
+  <p>InsightGPT is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License, Version 2.0</a>.</p>
 
-  <p>Disclaimer: The developers of Whitlock are not responsible for any loss, injury, claim, liability, or damage related to your use of the application, whether from errors or omissions in the content of our website or any other linked sites, from the site being down, or from any other use of the site. Use at your own risk.</p>
+  <p>Disclaimer: The developers of InsightGPT are not responsible for any loss, injury, claim, liability, or damage related to your use of the application, whether from errors or omissions in the content of our website or any other linked sites, from the site being down, or from any other use of the site. Use at your own risk.</p>
 </mat-dialog-content>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close cdkFocusInitial (click)="closeDialog()">Close</button>
+  <!-- Check if ConfigService API Key is set -->
+  <div *ngIf="configService.getOpenAIToken() == ''">
+    <button mat-button color="primary" (click)="onConfigure()">Configure InsightGPT</button>
 </div>

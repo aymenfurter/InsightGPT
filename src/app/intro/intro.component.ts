@@ -10,7 +10,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatFormFieldModule } from "@angular/material/form-field";
-
+import { ConfigService } from '../services/config.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InfoDialogComponent } from '../info-dialog/info-dialog.component';
 
 @Component({
   selector: 'app-intro',
@@ -18,12 +20,21 @@ import { MatFormFieldModule } from "@angular/material/form-field";
   styleUrls: ['./intro.component.css'], 
 })
 export class IntroComponent {
-  constructor(private matProgress: MatProgressBarModule, private matBadge: MatBadgeModule, private matIcon: MatIconModule, private snackBar: MatSnackBar, private router: Router, private openAi: OpenaiService, public pdfPageService: PDFPageService) { }
+  constructor(private dialog: MatDialog, private configService: ConfigService, private matProgress: MatProgressBarModule, private matBadge: MatBadgeModule, private matIcon: MatIconModule, private snackBar: MatSnackBar, private router: Router, private openAi: OpenaiService, public pdfPageService: PDFPageService) { }
   numPages: number = 0;
 
   ngOnInit(): void {
     pdfjs.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.3.122/pdf.worker.min.js';
     this.numPages = this.pdfPageService.getPages().length;
+
+    // check if config api key is not set
+    if (this.configService.getOpenAIToken() == '') {
+      this.dialog.open(InfoDialogComponent, {
+      width: '600px',
+      enterAnimationDuration: 200,
+      exitAnimationDuration: 200
+    });
+    }
   }
   onDrop(event: Event) {
     event.preventDefault();
