@@ -1,0 +1,22 @@
+h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+mat-checkbox {
+  margin-top: 1rem;
+}
+
+mat-error {
+  color: #f44336;
+  font-size: 0.75rem;
+}
+
+mat-hint {
+  font-size: 0.75rem;
+}

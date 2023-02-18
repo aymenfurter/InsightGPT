@@ -1,18 +1,20 @@
-
 <header>
-<mat-toolbar color="primary">
-  <mat-toolbar-row>
-    <a routerLink="/intro"><img src="assets/logo.png" class="logo" alt="Logo">
-    </a>
-    &nbsp;&nbsp;Whitlock
-    <span class="spacer"></span>
-    <a mat-button routerLink="/about"><mat-icon>info</mat-icon></a>
-    <a mat-button routerLink="/settings"><mat-icon>settings</mat-icon></a>
-    <a mat-button routerLink="/browse"><mat-icon>webhook</mat-icon></a>
-    <a mat-button routerLink="/intro"><mat-icon>upload</mat-icon></a>
-  </mat-toolbar-row>
-</mat-toolbar>
+  <mat-toolbar color="primary">
+    <mat-toolbar-row>
+      <a routerLink="/intro">
+        <img src="assets/logo.png" class="logo" alt="Logo">
+      </a>
+      &nbsp;&nbsp;Whitlock
+      <span class="spacer"></span>
+      <button mat-icon-button (click)="openInfoDialog()">
+        <mat-icon>info</mat-icon>
+      </button>
+      <a mat-button routerLink="/settings"><mat-icon>settings</mat-icon></a>
+      <a mat-button routerLink="/browse"><mat-icon>webhook</mat-icon></a>
+      <a mat-button routerLink="/intro"><mat-icon>upload</mat-icon></a>
+    </mat-toolbar-row>
+  </mat-toolbar>
 </header>
 <div class="main-content">
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
 </div>

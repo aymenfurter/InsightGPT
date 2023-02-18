@@ -1,0 +1,54 @@
+<form [formGroup]="configForm" (ngSubmit)="onSubmit()">
+
+  <mat-form-field appearance="fill">
+    <mat-label>Standard Named Entities (e.g. Person, Location, Event, Dates)</mat-label>
+    <mat-select formControlName="standardEntitiesEnabled">
+      <mat-option [value]="true">Enabled</mat-option>
+      <mat-option [value]="false">Disabled</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+   <mat-form-field appearance="fill">
+    <mat-label>Amount of Custom Entities to look for per text</mat-label>
+    <mat-select formControlName="amountOfEntities">
+      <mat-option [value]="10">10</mat-option>
+      <mat-option [value]="9">9</mat-option>
+      <mat-option [value]="8">8</mat-option>
+      <mat-option [value]="7">7</mat-option>
+      <mat-option [value]="6">6</mat-option>
+      <mat-option [value]="5">5</mat-option>
+      <mat-option [value]="4">4</mat-option>
+      <mat-option [value]="3">3</mat-option>
+      <mat-option [value]="2">2</mat-option>
+      <mat-option [value]="1">1</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Custom Entities (Can be anything, e.g. brand names, UUIDs, stock symbols)</mat-label>
+    <input matInput formControlName="customEntitiesList" placeholder="Comma-separated list of entities">
+    <mat-hint align="end">{{ configForm.get('customEntitiesList')?.value?.split(',').length }} custom entities</mat-hint>
+    <mat-error *ngIf="configForm.get('customEntitiesList')?.invalid">Please enter a comma-separated list of custom entities</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>OpenAI Token</mat-label>
+    <input matInput formControlName="openAIToken" placeholder="OpenAI Token">
+    <mat-hint align="end">{{ configForm.get('openAIToken')?.value?.length }}/32 characters</mat-hint>
+    <mat-error *ngIf="configForm.get('openAIToken')?.invalid">Please enter a valid 32-character OpenAI token</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Endpoint URL</mat-label>
+    <input matInput formControlName="endpointUrl" placeholder="Endpoint URL">
+    <mat-error *ngIf="configForm.get('endpointUrl')?.invalid">Please enter a valid endpoint URL</mat-error>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Model Name</mat-label>
+    <input matInput formControlName="modelName" placeholder="Model Name">
+    <mat-error *ngIf="configForm.get('modelName')?.invalid">Please enter a model name</mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" type="submit">Save</button>
+</form>

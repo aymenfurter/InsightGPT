@@ -16,28 +16,47 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { ConfigComponent } from './config/config.component';
+import { ConfigService } from './services/config.service';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from '@angular/material/select';
+import { InfoDialogComponent } from './info-dialog/info-dialog.component';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
     IntroComponent,
-    BrowseComponent
+    ConfigComponent,
+    BrowseComponent,
+    InfoDialogComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgxWebstorageModule.forRoot(),
     BrowserAnimationsModule,
+    MatSelectModule,
     MatIconModule,
     MatBadgeModule,
     MatProgressBarModule,
+    MatInputModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
     MatSnackBarModule,
+    MatCheckboxModule,
     MatToolbarModule,
     MatButtonModule,
-    MatCardModule
+    MatCardModule,
+    MatDialogModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
-  providers: [OpenaiService],
+  providers: [OpenaiService, ConfigService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

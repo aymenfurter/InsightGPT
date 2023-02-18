@@ -10,7 +10,8 @@ import { Options } from 'vis-network/standalone/esm/vis-network';
 import { Data } from 'vis-network/standalone/esm/vis-network';
 import { NodeOptions } from 'vis-network/standalone/esm/vis-network';
 import { EdgeOptions } from 'vis-network/standalone/esm/vis-network';
-
+import { ConfigService } from '../services/config.service';
+import { config } from 'rxjs';
 
 @Component({
   selector: 'app-browse',
@@ -27,7 +28,8 @@ export class BrowseComponent {
   contextualInfo: string = '';
 
 
-  constructor(private pdfPageService: PDFPageService) {}
+  constructor(private pdfPageService: PDFPageService, private configService: ConfigService) {}
+
 
   ngOnInit(): void {
     this.pages = this.pdfPageService.getPages();
@@ -93,6 +95,9 @@ export class BrowseComponent {
 
     // Add category nodes and edges
     for (const category in page.standardCategories) {
+      if (this.configService.getStandardEntitiesEnabled() === false) {
+        break;
+      }
       // get first key of object
       const categoryLabel = Object.keys(page.standardCategories)[category as unknown as number];
       const listOfSubcategories = page.standardCategories[categoryLabel];
@@ -141,6 +146,7 @@ export class BrowseComponent {
     }
 
     // Add evaluation nodes and edges
+    /*
     if (page.evaluations) {
       page.evaluations.forEach((evaluation, index) => {
         const evaluationNode = {
@@ -151,7 +157,7 @@ export class BrowseComponent {
         this.nodes.push(evaluationNode);
         this.edges.push({ from: page.pageNumber, to: `${page.pageNumber}-evaluation-${index}` });
       });
-    }
+    }*/
 
     // Add extended category nodes and edges
     for (const category in page.extendedCategories) {
@@ -203,6 +209,7 @@ export class BrowseComponent {
     }
   });
 
+
   // remove duplicates
   this.nodes = this.nodes.filter((node, index, self) =>
     index === self.findIndex((t) => (
@@ -216,7 +223,6 @@ export class BrowseComponent {
       t.from === edge.from && t.to === edge.to
     ))
   );
-
 
 
   this.network.setData({ nodes: this.nodes, edges: this.edges });

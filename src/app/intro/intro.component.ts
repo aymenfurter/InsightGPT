@@ -9,6 +9,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatFormFieldModule } from "@angular/material/form-field";
+
 
 @Component({
   selector: 'app-intro',
@@ -25,8 +27,6 @@ export class IntroComponent {
   }
   onDrop(event: Event) {
     event.preventDefault();
-    const files = (event.target as HTMLInputElement).files;
-    // process the files here
   }
 
   onDragOver(event: Event) {
@@ -40,7 +40,6 @@ export class IntroComponent {
       return;
     }
 
-    // loop through files
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
       console.log(file);
@@ -57,9 +56,11 @@ export class IntroComponent {
         const pdf = await pdfjs.getDocument({ data: typedArray }).promise;
         const numPages = pdf.numPages;
 
+        var hasText = false;
+
         for (let i = 1; i <= numPages; i++) {
           let text = '';
-          debugger;
+          
           const page = await pdf.getPage(i);
           const content = await page.getTextContent();
           text += content.items
@@ -67,11 +68,21 @@ export class IntroComponent {
           .map(item => (item as TextItem).str)
           .join('');
 
-          console.log("this", file);
+          if (text.length > 0) {
+            hasText = true;
+          }
+          
           const pdfPage = new PDFPage(file, text, i);
           this.pdfPageService.addPage(pdfPage); // Add the generated page to the service
         }
-        this.snackBar.open(`${numPages} pages added from ${file.name}.`, 'Close');
+
+        // print warning if text is empty
+        if (!hasText) {
+          this.snackBar.open(`Warning: No text found in ${file.name}.`, 'Close');
+        } else {
+          this.snackBar.open(`${numPages} pages added from ${file.name}.`, 'Close');
+        }
+
         this.numPages = this.pdfPageService.getPages().length;
   
       };
@@ -79,8 +90,11 @@ export class IntroComponent {
     }
   }
   onAnalyzeFiles() {
-    //this.router.navigate(['/browse']);
     this.pdfPageService.analyzePages();
+  }
+
+  onContinue() {
+    this.router.navigate(['/browse']);
   }
 
   onReset() {

@@ -1,3 +1,5 @@
+import { ConfigService } from './services/config.service';
+
 export interface Configuration {
 	basePath: string;
 	apiKey: string;
@@ -13,22 +15,24 @@ interface GPT3Params {
 }
 
 export class AzureOpenAIApi {
-	basePath: string;
-	apiKey: string;
+	configService: ConfigService;
 
-	constructor(config: Configuration) {
-		this.basePath = config.basePath;
-		this.apiKey = config.apiKey;
+	constructor(confService: ConfigService) {
+		this.configService = confService;
 	}
 
 	async createCompletion(data: GPT3Params) {
-		const url = `${this.basePath}/openai/deployments/${data.model}/completions?api-version=2022-12-01`;
+		var endpointUrl = this.configService.getEndpointUrl();
+		var modelName = this.configService.getModelName();
+		var openAIToken = this.configService.getOpenAIToken();
+
+		const url = endpointUrl + '/openai/deployments/' + modelName + '/completions?api-version=2022-12-01';
 
 		const response = await fetch(url, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
-				'api-key': `${this.apiKey}`,
+				'api-key': openAIToken,
 			},
 			body: JSON.stringify(data),
 		});

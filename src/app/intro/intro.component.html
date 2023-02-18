@@ -41,6 +41,9 @@
   <div class="buttons-container">
     <mat-card-content>
       <button mat-button color="primary" (click)="onAnalyzeFiles()">Analyze files</button>
+      <button mat-button [disabled]="pdfPageService.getAnalyzedPages().length <= 1" (click)="onContinue()">Start Investigation</button>
+
+      
       <button mat-button color="warn" (click)="onReset()">Reset</button>
     </mat-card-content>
   </div>
