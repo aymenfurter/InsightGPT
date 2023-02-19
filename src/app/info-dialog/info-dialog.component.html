@@ -1,12 +1,12 @@
 <h2 mat-dialog-title>Welcome to InsightGPT</h2>
 <mat-dialog-content class="mat-typography">
-  <h3>Data Stored Locally</h3>
+  <h3>Data Stored Locally:</h3>
   <ul>
     <li>PDF content uploaded by the user for analysis</li>
-    <li>Configuration settings, including OpenAI credentials</li>
+    <li>Configuration settings, including API Key</li>
   </ul>
 
-  <h3>Data Sent to OpenAI GPT Service</h3>
+  <h3>Data Sent to Azure OpenAI Service:</h3>
   <ul>
     <li>Extracted text from uploaded PDFs</li>
   </ul>
@@ -16,6 +16,9 @@
   <p>InsightGPT is licensed under the <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License, Version 2.0</a>.</p>
 
   <p>Disclaimer: The developers of InsightGPT are not responsible for any loss, injury, claim, liability, or damage related to your use of the application, whether from errors or omissions in the content of our website or any other linked sites, from the site being down, or from any other use of the site. Use at your own risk.</p>
+  <div *ngIf="configService.getOpenAIToken() == ''">
+    InsightGPT requires an Azure Open AI Service instance and an API Key.
+  </div>
 </mat-dialog-content>
 <div mat-dialog-actions>
   <button mat-button mat-dialog-close cdkFocusInitial (click)="closeDialog()">Close</button>

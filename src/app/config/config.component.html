@@ -32,7 +32,7 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill">
-    <mat-label>OpenAI Token</mat-label>
+    <mat-label>API Key</mat-label>
     <input matInput formControlName="openAIToken" placeholder="OpenAI Token">
     <mat-hint align="end">{{ configForm.get('openAIToken')?.value?.length }}/32 characters</mat-hint>
     <mat-error *ngIf="configForm.get('openAIToken')?.invalid">Please enter a valid 32-character OpenAI token</mat-error>
