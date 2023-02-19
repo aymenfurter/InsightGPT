@@ -10,15 +10,6 @@
 * Customize your interests about the extracted data through the settings.
 * Start your analysis through the network view.
 
-## License
-InsightGPT is licensed under the Apache License, Version 2.0.
-
-## Disclaimer
-The developers of InsightGPT are not responsible for any loss, injury, claim, liability, or damage related to your use of the application, whether from errors or omissions in the content of our website or any other linked sites, from the site being down, or from any other use of the site. Use at your own risk.
-## Requirements
-
-InsightGPT requires an [Azure Open AI Service](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) instance and an API Key.
-
 ## Screenshots
 
 Here's an example of InsightGPT in action, analyzing UFO sightings reports from [The National Archives](https://www.nationalarchives.gov.uk/ufos/):
@@ -47,3 +38,12 @@ InsightGPT is based on the following technologies:
 * Typescript
 * Material
 * Azure OpenAI Service
+
+## License
+InsightGPT is licensed under the Apache License, Version 2.0.
+
+## Disclaimer
+The developers of InsightGPT are not responsible for any loss, injury, claim, liability, or damage related to your use of the application, whether from errors or omissions in the content of our website or any other linked sites, from the site being down, or from any other use of the site. Use at your own risk.
+## Requirements
+
+InsightGPT requires an [Azure Open AI Service](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/) instance and an API Key.
