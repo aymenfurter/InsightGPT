@@ -1,4 +1,5 @@
 # InsightGPT
+[![Build and Deploy Angular App](https://github.com/aymenfurter/InsightGPT/actions/workflows/main.yml/badge.svg)](https://github.com/aymenfurter/InsightGPT/actions/workflows/main.yml)
 
 🤖💬 Large language models, such as GPT-3, have recently drawn a lot of interest. But can they be utilized for purposes other than chatbots?
 
