@@ -3,7 +3,11 @@
 
 🤖💬 Large language models, such as GPT-3, have recently drawn a lot of interest. But can they be utilized for purposes other than chatbots?
 
+
 📄🔎 InsightGPT allows users to upload PDF files for text extraction. Once the text is extracted, the power of GPT-3 is used to extract additional information such as location or date. By tweaking the settings, users are able to specify their own interests, such as the shape of an object or the type of observation. For example, if a user is analyzing UAP / UFO sightings, they can quickly view all relevant data, including location, date, shape, and observation type, all from a single interface. This makes it easy to identify patterns and similarities, such as multiple sightings from a single location or of a specific shape. With InsightGPT, users can easily and efficiently analyze text data to gain new insights and make data-driven decisions.
+
+
+🚀🌕 Live Demo: https://aymenfurter.github.io/InsightGPT
 
 ## Features
 * Upload PDF files for text extraction (In-Browser).
