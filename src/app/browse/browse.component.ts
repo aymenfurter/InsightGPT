@@ -11,9 +11,12 @@ import { Data } from 'vis-network/standalone/esm/vis-network';
 import { NodeOptions } from 'vis-network/standalone/esm/vis-network';
 import { EdgeOptions } from 'vis-network/standalone/esm/vis-network';
 import { ConfigService } from '../services/config.service';
-import { config } from 'rxjs';
+import { config, map, startWith } from 'rxjs';
 import { ElementSchemaRegistry } from '@angular/compiler';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {Observable} from 'rxjs';
+import { FormControl } from '@angular/forms';
+
 
 
 @Component({
@@ -34,11 +37,20 @@ export class BrowseComponent {
   selectedDocumentName: string = '';
   contextualInfo: string = '';
 
-
+  // Search
+  searchControl = new FormControl('');
+  searchNodeValues: string[] = [];
+  filteredOptions: Observable<string[]> | undefined;
+  
   constructor(public dialog: MatDialog, private pdfPageService: PDFPageService, private configService: ConfigService) {}
 
 
   ngOnInit(): void {
+    this.filteredOptions = this.searchControl.valueChanges.pipe(
+      startWith(''),
+      map((value: any) => this._filter(value || '')),
+    );
+
     this.pages = this.pdfPageService.getPages();
     const files = this.pdfPageService.getFiles();
     if (files.length > 0) {
@@ -70,7 +82,8 @@ export class BrowseComponent {
       const listOfValues = Object.values(listOfSubcategories)[0];
 
       if (Array.isArray(listOfValues)) {
-        for (const subcategory of listOfValues) {
+        for (const sub of listOfValues) {
+          const subcategory = sub.toLowerCase();
           const subcategoryNode = {
             id: `${categoryType}-${subcategory}`,
             label: subcategory + '(' + categoryText + ')',
@@ -79,6 +92,7 @@ export class BrowseComponent {
 
           if (!this.elementExists(subcategoryNode.id)) {
             nodes.push(subcategoryNode);
+            this.searchNodeValues.push(subcategoryNode.label);
           } else {
             // increase size of node 
             const node = nodes.find(n => n.id === subcategoryNode.id);
@@ -183,6 +197,7 @@ export class BrowseComponent {
 
     if (!this.elementExists(page.pageNumber + "-" + page.fileName)) {
       nodes.push(pageNode);
+      this.searchNodeValues.push(pageNode.label);
     }
   }
 
@@ -237,6 +252,7 @@ export class BrowseComponent {
     // Highlight search term by wrapping it with a span element that has the class "bold"
     this.contextualInfo = this.contextualInfo.replace(searchTermRegex, '<span class="bold">$&</span>');
   }
+
   openDialog(content: string): void {
     const dialogRef = this.dialog.open(DialogContentComponent, {
       data: { content: content }
@@ -246,6 +262,30 @@ export class BrowseComponent {
       console.log('The dialog was closed');
     });
   }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    // alphabetical sort
+    this.searchNodeValues.sort();
+    return this.searchNodeValues.filter(option => option.toLowerCase().includes(filterValue));
+  }
+
+  onNodeSelected(nodeLabel: string) {
+    this.focusOnNode(nodeLabel);
+  }
+
+  // focus on node by label 
+  focusOnNode(nodeLabel: string) {
+      let network = this.network as any;
+      for (const node of network.body.data.nodes.get()) {
+        if (node.label === nodeLabel) {
+          let nodeId = node.id as string;
+          this.network!.focus(nodeId, { scale: 1, animation: true });
+          break;
+        }
+      }
+  }
+
 }
 
 @Component({
@@ -270,3 +310,4 @@ export class DialogContentComponent {
   }
 
 }
+

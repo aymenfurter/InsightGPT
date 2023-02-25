@@ -1,5 +1,19 @@
 <div class="layout">
   <div class="network-panel">
+    <mat-form-field class="search-field">
+      <input [formControl]="searchControl" type="text" placeholder="Search nodes" matInput [matAutocomplete]="auto">
+
+
+      <mat-icon matSuffix class="mat-icon-button" aria-label="Search">
+        <span class="material-icons">search</span>
+      </mat-icon>
+
+      <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete" (optionSelected)="onNodeSelected($event?.option?.value)">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          {{ option }}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
     <div id="network-container"></div>
   </div>
   <mat-divider></mat-divider>

@@ -58,3 +58,34 @@
   overflow: scroll;
   max-height: 0px;
 }
+
+.search-field {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 16px;
+  z-index: 1;
+}
+
+.network-panel {
+  position: relative;
+}
+
+#network-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border: 1px solid lightgray;
+}
+
+.mat-icon-button {
+  color: #999999;
+  padding: 8px;
+}
+
+.mat-icon-button:hover {
+  background-color: #e0e0e0;
+  border-radius: 50%;
+}
