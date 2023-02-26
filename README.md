@@ -11,9 +11,9 @@
 * Specify what entities to extract through the settings.
 * Start analysis through the network view.
 
-## Screenshots
+## InsightGPT in action
 
-Here's the example of InsightGPT in action, analyzing UFO sightings reports from [The National Archives](https://www.nationalarchives.gov.uk/ufos/):
+Here you can see InsightGPT in action, analyzing UFO sightings reports from [The National Archives](https://www.nationalarchives.gov.uk/ufos/):
 
 ![Screenshot 1](intro.gif)
 
