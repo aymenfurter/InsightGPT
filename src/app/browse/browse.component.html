@@ -15,6 +15,15 @@
       </mat-autocomplete>
     </mat-form-field>
     <div id="network-container"></div>
+    <div id="timeline-parent">
+      <div id="timeline-container"></div> 
+    </div>  
+    <div class="time-button-container">
+
+      <button color="primary" mat-fab aria-label="timeline" (click)="toggleTimeline()">
+        <mat-icon>timeline</mat-icon>
+      </button>
+    </div>
   </div>
   <mat-divider></mat-divider>
 </div>

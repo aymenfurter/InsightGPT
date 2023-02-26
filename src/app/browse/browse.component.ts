@@ -16,8 +16,7 @@ import { ElementSchemaRegistry } from '@angular/compiler';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import {Observable} from 'rxjs';
 import { FormControl } from '@angular/forms';
-
-
+import { Timeline } from "vis-timeline/standalone";
 
 @Component({
   selector: 'app-browse',
@@ -33,9 +32,13 @@ export class BrowseComponent {
   private network: Network | undefined;
   private nodes: Node[] = [];
   private edges: Edge[] = [];
+  // array for timeline entries array of any
+  private timelineEntries: any[] = [];
+  private timeline: Timeline | undefined;
   pdfUrl: string = '';
   selectedDocumentName: string = '';
   contextualInfo: string = '';
+  timelineEnabled: boolean = false;
 
   // Search
   searchControl = new FormControl('');
@@ -67,9 +70,13 @@ export class BrowseComponent {
   private createNetwork(): void {
     const nodesAndEdges = this.getNodesAndEdges();
     const container = document.getElementById('network-container');
+    const timelineContainer = document.getElementById('timeline-container');
     const options = this.getNetworkOptions();
+    const timelineOptions = this.getTimelineOptions();
     this.initializeNetwork(container!, nodesAndEdges, options);
+    this.initializeTimeline(timelineContainer!, timelineOptions);
     this.addClickHandlers(this.network);
+    this.addTimelineClickHandlers(this.timeline!);
   }
 
   private createCategoryNodes(page: any, categoryType: string, nodes: any[], edges: any[]) {
@@ -121,6 +128,7 @@ export class BrowseComponent {
   private getNodesAndEdges() {
     const nodes: any[] = [];
     const edges: any[] = [];
+    const timelineEntries: any[] = [];
 
     this.pages.forEach(page => {
       this.createPageAndFileNodes(page, nodes, edges);
@@ -130,8 +138,34 @@ export class BrowseComponent {
 
     return { nodes, edges };
   }
+
   private initializeNetwork(container: HTMLElement, nodesAndEdges: any, options: any): void {
     this.network = new Network(container, nodesAndEdges, options);
+  }
+  private initializeTimeline(container: HTMLElement, timelineOptions: any): void {
+    console.log(this.timelineEntries);
+    // check timelineEntries for NaN in start
+    for (const entry of this.timelineEntries) {
+      if (isNaN(entry.start)) {
+        console.log(entry + " is NaN");
+      }
+    }
+
+    const timelineData = new DataSet(this.timelineEntries);
+    this.timeline = new Timeline(container, timelineData, timelineOptions);
+  }
+
+  private addTimelineClickHandlers(timeline: Timeline) {
+    timeline.on('click', (properties: any) => {
+      const label = properties.item;
+      this.focusOnNodeById(label);
+    });
+  }
+
+  toggleTimeline() {
+    this.timelineEnabled = !this.timelineEnabled;
+    document.getElementById('timeline-parent')!.style.opacity = this.timelineEnabled ? '1' : '0';
+    document.getElementById('timeline-parent')!.style.zIndex = this.timelineEnabled ? '1' : '-500';
   }
 
   private addClickHandlers(network: any) {
@@ -175,7 +209,6 @@ export class BrowseComponent {
             let nodeText = this.pageTextMap.get(connectedNode as string);
             if (nodeText != undefined && nodeText.length > 0) {
               nodeText = nodeText.replace(new RegExp(highlightText, 'gi'), '<span class="bold">$&</span>');
-              console.log("selectedNodeId: " + selectedNodeId + " connectedNode: " + connectedNode + " nodeText: " + nodeText + " highlightText: " + highlightText + "")
               text += nodeText + "<br>";
             }
         }
@@ -202,7 +235,26 @@ export class BrowseComponent {
 
     if (!this.elementExists(page.pageNumber + "-" + page.fileName)) {
       nodes.push(pageNode);
+      this.createTimelineItem(page);
       this.searchNodeValues.push(pageNode.label);
+    }
+  }
+
+  private createTimelineItem = (page: any) => {
+    if (page.date != undefined && page.date.match(/^\d{4}-\d{2}-\d{2}$/) != null) {
+      let date = new Date(page.date);
+
+
+      if (!isNaN(date.getTime())) {
+        let timelineItem = {id: page.pageNumber + "-" + page.fileName, content: `Page ${page.pageNumber} of ${page.fileName}`, start: new Date(page.date), type: 'point'};
+        this.timelineEntries.push(timelineItem);
+      }
+    }
+  }
+
+  private getTimelineOptions() {
+    return {
+      maxHeight: 250,
     }
   }
 
@@ -290,7 +342,9 @@ export class BrowseComponent {
         }
       }
   }
-
+  focusOnNodeById(nodeId: string) {
+    this.network!.focus(nodeId, { scale: 1, animation: true });
+  }
 }
 
 @Component({
