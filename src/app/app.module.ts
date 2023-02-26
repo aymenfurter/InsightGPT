@@ -25,6 +25,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from '@angular/material/select';
 import { InfoDialogComponent } from './info-dialog/info-dialog.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 
 
@@ -43,6 +44,7 @@ import { InfoDialogComponent } from './info-dialog/info-dialog.component';
     NgxWebstorageModule.forRoot(),
     BrowserAnimationsModule,
     MatSelectModule,
+    MatAutocompleteModule,
     MatIconModule,
     MatBadgeModule,
     MatProgressBarModule,
