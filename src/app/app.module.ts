@@ -26,6 +26,8 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatSelectModule } from '@angular/material/select';
 import { InfoDialogComponent } from './info-dialog/info-dialog.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { HttpClientModule } from '@angular/common/http'; // import HttpClientModule
+
 
 
 
@@ -41,6 +43,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     NgxWebstorageModule.forRoot(),
     BrowserAnimationsModule,
     MatSelectModule,

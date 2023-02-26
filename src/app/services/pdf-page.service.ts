@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { PDFPage } from './../models/pdf-page';
 import { LocalStorageService } from 'ngx-webstorage';
 import { OpenaiService } from '../openai.service';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
 providedIn: 'root'
@@ -14,6 +15,7 @@ export class PDFPageService {
 
   constructor(
     private localStorage: LocalStorageService,
+    private http: HttpClient,
     private openaiService: OpenaiService
   ) {
     this.loadFromLocalStorage();
@@ -102,5 +104,18 @@ export class PDFPageService {
     this.pagesKey = 'pdf_pages';
     const pages = this.localStorage.retrieve(this.pagesKey) || [];
     this.pages = pages;
+  }
+
+  loadSampleData() {
+    this.pagesKey = 'pdf_pages';
+    this.http.get('assets/sample-data.json').subscribe((data: any) => {
+      this.pages = data;
+    });
+  }
+  loadSampleDataUFO() {
+    this.pagesKey = 'pdf_pages';
+    this.http.get('assets/sample-data-ufo.json').subscribe((data: any) => {
+      this.pages = data;
+    });
   }
 }

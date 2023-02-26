@@ -83,12 +83,12 @@ export class BrowseComponent {
 
       if (Array.isArray(listOfValues)) {
         for (const sub of listOfValues) {
-          // check if sub is null
-          let subCategoryVal = sub; 
-          if (sub != null) {
-            subCategoryVal = sub.toLowerCase();
-          }
-          const subcategory = subCategoryVal;
+          let categoryLabel = sub;
+          if (typeof sub.toLowerCase === 'function') {
+            categoryLabel = sub.toLowerCase();
+          } 
+
+          const subcategory = categoryLabel;
           const subcategoryNode = {
             id: `${categoryType}-${subcategory}`,
             label: subcategory + '(' + categoryText + ')',
