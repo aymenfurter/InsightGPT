@@ -91,3 +91,21 @@
   background-color: #e0e0e0;
   border-radius: 50%;
 }
+
+#timeline-parent {
+  background-color: whitesmoke;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 250px;
+  z-index: -500;
+  opacity: 0;
+}
+.time-button-container {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  margin: 16px;
+  z-index: 1;
+}
