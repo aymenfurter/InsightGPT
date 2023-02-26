@@ -65,6 +65,8 @@
   right: 0;
   margin: 16px;
   z-index: 1;
+  max-width: 50%;
+  min-width: 25%;
 }
 
 .network-panel {

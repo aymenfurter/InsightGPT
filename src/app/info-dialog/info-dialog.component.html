@@ -24,5 +24,8 @@
   <button mat-button mat-dialog-close cdkFocusInitial (click)="closeDialog()">Close</button>
   <!-- Check if ConfigService API Key is set -->
   <div *ngIf="configService.getOpenAIToken() == ''">
-    <button mat-button color="primary" (click)="onConfigure()">Configure InsightGPT</button>
+    <button mat-button color="secondary" (click)="onSampleData()">OSHA Accidents Sample</button>
+    <button mat-button color="secondary" (click)="onSampleDataUFO()">UFO Sightings Sample</button>
+    <button mat-button color="primary" (click)="onConfigure()">Configuration</button>
+  </div>
 </div>
