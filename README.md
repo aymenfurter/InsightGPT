@@ -15,11 +15,7 @@
 
 Here's the example of InsightGPT in action, analyzing UFO sightings reports from [The National Archives](https://www.nationalarchives.gov.uk/ufos/):
 
-![Screenshot 1](screenshot-1.png)
-
-![Screenshot 2](screenshot-2.png)
-
-![Screenshot 3](screenshot-3.png)
+![Screenshot 1](intro.gif)
 
 ## Installation
 
@@ -39,6 +35,10 @@ InsightGPT is based on the following technologies:
 * Typescript
 * Material
 * Azure OpenAI Service
+
+The sample data was gathered from:
+* [The National Archives (UK)](https://www.nationalarchives.gov.uk/ufos/)
+* [Occupational Safety and Health Administration (US)](https://www.osha.gov/)
 
 ## License
 InsightGPT is licensed under the Apache License, Version 2.0.
