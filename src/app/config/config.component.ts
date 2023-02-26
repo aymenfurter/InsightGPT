@@ -39,7 +39,7 @@ export class ConfigComponent implements OnInit {
   ngOnInit(): void {
     this.configForm = this.formBuilder.group({
       standardEntitiesEnabled: [this.configService.getStandardEntitiesEnabled(), Validators.required],
-      customEntitiesList: [this.configService.getCustomEntitiesList(), [Validators.pattern(/^[\w,\s]+$/)]],
+      customEntitiesList: [this.configService.getCustomEntitiesList(), [Validators.pattern(/^[\w,\s().\u00C0-\u024F]+$/)]],
       openAIToken: [this.configService.getOpenAIToken(), [Validators.required, Validators.minLength(32), Validators.maxLength(32), Validators.pattern(/^[\w-]+$/)]],
       endpointUrl: [this.configService.getEndpointUrl(), [Validators.required, Validators.pattern(/^https?:\/\/[\w./-]+$/)]],
       modelName: [this.configService.getModelName(), Validators.required],
