@@ -55,11 +55,11 @@ export class OpenaiService {
     })
     .then(resp => {
       if (!resp) {
-        return {evaluations: [], extendedCategories: [], standardCategories: [], date: ""};
+        return Promise.reject(new Error('No data received from OpenAI API'));
       }
 
       if (!resp.choices || resp.choices.length === 0 || !resp.choices[0].text) {
-        return {evaluations: [], extendedCategories: [], standardCategories: [], date: ""};
+        return Promise.reject(new Error('No text received from OpenAI API'));
       }
 
       const text = resp.choices[0].text;
