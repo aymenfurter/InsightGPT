@@ -28,9 +28,6 @@ export class ConfigComponent implements OnInit {
   modelName: string = '';
   amountOfEntities: string = '10';
 
-
-
-
   constructor(
     private configService: ConfigService,
     private formBuilder: FormBuilder
@@ -50,7 +47,6 @@ export class ConfigComponent implements OnInit {
   onCancel(): void {
   }
 
-  // new Method to set all values to 0
   onSubmit() {
 
 
